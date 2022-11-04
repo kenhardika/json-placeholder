@@ -64,6 +64,7 @@ function Container(props) {
             [e.target.name]: e.target.value
         }));
     }
+
     function onChangeCompany(e){
         e.preventDefault();
         setSelectedData((prev)=>({...prev,
@@ -72,6 +73,7 @@ function Container(props) {
                 }    
         }));
     }
+
     async function handleEdit(e){
         e.preventDefault();
         try{
@@ -88,6 +90,7 @@ function Container(props) {
         catch{
         }
     }
+
     async function handleSubmit(e){
         e.preventDefault();
         try{
@@ -99,9 +102,11 @@ function Container(props) {
         }
         catch{ }
     }
+    
     useEffect(()=>{
         fetchData(`https://jsonplaceholder.typicode.com/users/`);
     }, [fetchData])
+    
     return (
         <div className='w-full h-full flex flex-col justify-center items-center p-5'>
             <button className="block w-[100px] h-[40px] text-white bg-red-400 hover:bg-red-600 
