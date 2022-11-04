@@ -1,8 +1,9 @@
 import React from 'react';
 
-function Card({data, selectedData}) {
+function Card({data, selectedData, deleteSelectedData, handleModalOpen}) {
     return (
-        <div className='card h-full w-full p-4  gap-4 flex flex-row border-solid border-black border-2 rounded-lg '>
+        <div className='h-[230px] w-full p-4  gap-4 flex 
+            flex-row border-solid border-black border-2 rounded-lg '>
             <div className="leftSide h-full w-1/2 flex flex-col justify-between">
                 <article>
                     <p className='font-semibold pb-1'> Personal </p>
@@ -13,9 +14,18 @@ function Card({data, selectedData}) {
                 </article>                
                 
                 <div className="flex flex-row gap-3">
-                    <button onClick={()=>selectedData(data)} className='block w-[50px] h-[30px] text-white bg-red-400 hover:bg-red-600 
-                    font-medium rounded-lg text-sm text-center active:translate-y-1'> edit </button>
-                     <button onClick={()=>selectedData(data)} className='block w-[50px] h-[30px] text-white bg-red-400 hover:bg-red-600 
+                    <button onClick={()=>{
+                        handleModalOpen();
+                        selectedData(data);
+                    }} className='block w-[50px] h-[30px] 
+                        text-white bg-red-400 hover:bg-red-600 font-medium rounded-lg text-sm 
+                            text-center active:translate-y-1'> edit </button>
+                     <button onClick={
+                        ()=>{
+                            selectedData(data);
+                            deleteSelectedData(data);
+                        }} 
+                        className='block w-[50px] h-[30px] text-white bg-red-400 hover:bg-red-600 
                     font-medium rounded-lg text-sm text-center active:translate-y-1'> delete </button>
                 </div>
 
