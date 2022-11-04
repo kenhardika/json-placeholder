@@ -4,6 +4,7 @@ import fetchJSONPlaceholder from './utils/fetchJSONPlaceholder';
 import postAPI from './utils/postAPI';
 import editAPI from './utils/editAPI';
 import uniqid from 'uniqid';
+import deleteAPI from './utils/deleteAPI';
 
 
 function Container(props) {
@@ -42,9 +43,16 @@ function Container(props) {
         setSelectedData(data);
     }
 
-    function deleteSelectedData(selectedData){
-        setData((cur)=>(cur.filter((item)=> item.name !== selectedData.name)
-        ));
+    async function deleteSelectedData(selectedData){
+        try{
+                const responseAPI = await deleteAPI(selectedData.id);
+                if(responseAPI.status === 200){
+                    const newData = data.filter((item)=> item.id !== selectedData.id);
+                    setData(newData);
+                }
+        }
+        catch{
+        }
     }
 
     function onChangeEvent(e){
