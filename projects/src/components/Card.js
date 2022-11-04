@@ -3,7 +3,7 @@ import React from 'react';
 function Card({data, selectedData, deleteSelectedData, handleModalOpen}) {
     return (
         <div className='h-[230px] w-full p-4  gap-4 flex 
-            flex-row border-solid border-black border-2 rounded-lg '>
+            flex-row border-solid border-black border-2 rounded-lg shadow-lg hover:translate-y-[-2px] bg-gray-100'>
             <div className="leftSide h-full w-1/2 flex flex-col justify-between">
                 <article>
                     <p className='font-semibold pb-1'> Personal </p>
@@ -19,14 +19,14 @@ function Card({data, selectedData, deleteSelectedData, handleModalOpen}) {
                         selectedData(data);
                     }} className='block w-[50px] h-[30px] 
                         text-white bg-red-400 hover:bg-red-600 font-medium rounded-lg text-sm 
-                            text-center active:translate-y-1'> edit </button>
+                            text-center active:translate-y-[2px]'> edit </button>
                      <button onClick={
                         ()=>{
                             selectedData(data);
                             deleteSelectedData(data);
                         }} 
-                        className='block w-[50px] h-[30px] text-white bg-red-400 hover:bg-red-600 
-                    font-medium rounded-lg text-sm text-center active:translate-y-1'> delete </button>
+                        className='block w-[50px] h-[30px] text-white bg-red-500 hover:bg-red-600 
+                    font-medium rounded-lg text-sm text-center active:translate-y-[2px]'> delete </button>
                 </div>
 
             </div> 
