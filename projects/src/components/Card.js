@@ -2,14 +2,14 @@ import React from 'react';
 
 function Card({data, selectedData}) {
     return (
-        <div className='card h-full w-full p-2 flex flex-row border-solid border-black border-2 overflow-hidden '>
+        <div className='card h-full w-full p-4  gap-4 flex flex-row border-solid border-black border-2 rounded-lg '>
             <div className="leftSide h-full w-1/2 flex flex-col justify-between">
                 <article>
-                    <p className='font-semibold'> Personal </p>
-                    <p className='font-normal text-sm'> {data.name} </p>
-                    <p className='font-normal text-sm'> {data.email} </p>
-                    <p className='font-normal text-sm'> {data.phone} </p>
-                    <p className='font-normal text-sm'> {data.website} </p>
+                    <p className='font-semibold pb-1'> Personal </p>
+                    <p className='font-normal py-0.5 text-xs'> {data.name} </p>
+                    <p className='font-normal py-0.5 text-xs'> {data.email} </p>
+                    <p className='font-normal py-0.5 text-xs'> {data.phone} </p>
+                    <p className='font-normal py-0.5 text-xs'> {data.website} </p>
                 </article>                
                 
                 <div className="flex flex-row gap-3">
@@ -21,10 +21,10 @@ function Card({data, selectedData}) {
 
             </div> 
             <div className="leftSide h-full w-1/2">
-                <p className='font-semibold'> Company </p>
-                <p className='font-normal text-sm'> {data.company.name} </p>
-                <p className='font-normal text-sm'> {data.company.bs} </p>
-                <p className='font-normal text-sm'> {data.company.catchPhrase} </p>
+                <p className='font-semibold pb-1'> Company </p>
+                <p className='font-normal py-0.5 text-xs'> {data.company.name} </p>
+                <p className='font-normal py-0.5 text-xs'> {data.company.bs} </p>
+                <p className='font-normal py-0.5 text-xs'> {data.company.catchPhrase} </p>
             </div> 
             
         </div>

@@ -4,7 +4,6 @@ function fetchJSONPlaceholder(link){
 
     try{
         const fetchJSON = axios.get(link);
-        // console.log(fetchJSON);
         return fetchJSON
     }
     catch{
