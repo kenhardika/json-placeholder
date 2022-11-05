@@ -182,21 +182,16 @@ function Container(props) {
                                 </div>
                             </div>
                             <div className='flex flex-col w-[200px] h-[70px] items-center gap-2 justify-center text-white'>
-                            {
-                            showAddButton? 
                                     <button className='rounded-lg px-2 w-40 bg-red-300 
-                                        text-sm active:translate-y-[2px] p-1' type='submit' form='formInput'> Add </button>
-                                        :
-                                    <button className='rounded-lg px-2 w-40 bg-red-300 
-                                        text-sm active:translate-y-[2px] p-1' type='submit' form='formInput'> Save </button>
-                            }
-                            <button className='rounded-lg px-2 w-40 bg-red-600 
-                                    text-sm active:translate-y-[2px] p-1' form='formInput'
-                                    onClick={()=>{
-                                        setSelectedData(null);
-                                        handleModalClose();
-                                        setShowAddButton(false);
-                                    }}> Cancel </button>
+                                        text-sm active:translate-y-[2px] p-1' type='submit' form='formInput'> 
+                                        { showAddButton? 'Add' : "Save" }   </button>
+                                    <button className='rounded-lg px-2 w-40 bg-red-600 
+                                        text-sm active:translate-y-[2px] p-1' form='formInput'
+                                        onClick={()=>{
+                                            setSelectedData(null);
+                                            handleModalClose();
+                                            setShowAddButton(false);
+                                        }}> Cancel </button>
                             </div> 
                         </form> 
                     </div>
