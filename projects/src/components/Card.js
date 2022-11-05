@@ -1,6 +1,6 @@
 import React from 'react';
 
-function Card({data, selectedData, deleteSelectedData, handleModalOpen}) {
+function Card({data, onEdit, onDelete}) {
     return (
         <div className='h-[230px] w-full p-4  gap-4 flex 
             flex-row border-solid border-black border-2 rounded-lg shadow-lg hover:translate-y-[-2px] bg-gray-100'>
@@ -14,17 +14,10 @@ function Card({data, selectedData, deleteSelectedData, handleModalOpen}) {
                 </article>                
                 
                 <div className="flex flex-row gap-3">
-                    <button onClick={()=>{
-                        handleModalOpen();
-                        selectedData(data);
-                    }} className='block w-[50px] h-[30px] 
+                    <button onClick={(e)=>onEdit(e)} className='block w-[50px] h-[30px] 
                         text-white bg-red-400 hover:bg-red-600 font-medium rounded-lg text-sm 
                             text-center active:translate-y-[2px]'> edit </button>
-                     <button onClick={
-                        ()=>{
-                            selectedData(data);
-                            deleteSelectedData(data);
-                        }} 
+                     <button onClick={(e)=>onDelete(e)} 
                         className='block w-[50px] h-[30px] text-white bg-red-500 hover:bg-red-600 
                     font-medium rounded-lg text-sm text-center active:translate-y-[2px]'> delete </button>
                 </div>

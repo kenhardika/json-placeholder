@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import Card from './components/Card';
-import fetchJSONPlaceholder from './utils/fetchJSONPlaceholder';
-import postAPI from './utils/postAPI';
-import editAPI from './utils/editAPI';
+import Card from '../components/Card';
+import fetchJSONPlaceholder from '../utils/fetchJSONPlaceholder';
+import postAPI from '../utils/postAPI';
+import editAPI from '../utils/editAPI';
 import uniqid from 'uniqid';
-import deleteAPI from './utils/deleteAPI';
+import deleteAPI from '../utils/deleteAPI';
 
 
 function Container(props) {
@@ -39,23 +39,15 @@ function Container(props) {
         }
     }, [])
 
-    const fetchSelectedData = (data) =>{
-        setSelectedData(data);
-    }
-
-    async function deleteSelectedData(selectedData){
-        try{
-                const responseAPI = await deleteAPI(selectedData.id);
-                if(responseAPI.status === 200){
-                    const newData = data.filter((item)=> item.id !== selectedData.id);
+    async function deleteSelectedData(selectedDataId){
+        const responseAPI = await deleteAPI(selectedDataId);
+            if(responseAPI.status === 200 || selectedDataId > 10){
+                    const newData = data.filter((item)=> item.id !== selectedDataId);
                     setData(newData);
-                } else if(selectedData.id>10){
-                    const newData = data.filter((item)=> item.id !== selectedData.id);
-                    setData(newData);
+                } 
+            else {
+                  return
                 }
-        }
-        catch{
-        }
     }
 
     function onChangeEvent(e){
@@ -76,7 +68,6 @@ function Container(props) {
 
     async function handleEdit(e){
         e.preventDefault();
-        try{
             if(selectedData.id<10){
                 const responseAPI = await editAPI(selectedData);
                 const updatedItems = data.map(item => item.id === responseAPI.data.id ? responseAPI.data : item);
@@ -86,21 +77,25 @@ function Container(props) {
                 const updatedItems = data.map(item => item.id === selectedData.id ? selectedData : item);
                 setData(updatedItems);
             }
-        }
-        catch{
-        }
     }
 
+    function randomizeID(){
+        const randomId = Math.floor(Math.random()*50);
+        if(data.some((item)=> item.id === randomId? true : false)){
+            return randomizeID();
+        }
+        else{
+            return randomId;
+        }
+    }
+ 
     async function handleSubmit(e){
         e.preventDefault();
-        try{
-            const responseAPI = await postAPI(selectedData);
-            responseAPI.data.id = data.length + 1; // newly updated blm dicek
-            const responseData = responseAPI.data;
-            setData((prev)=>([responseData, ...prev]));
-            return
-        }
-        catch{ }
+        const responseAPI = await postAPI(selectedData);
+        responseAPI.data.id = randomizeID();
+        const responseData = responseAPI.data;
+        setData((prev)=>([responseData, ...prev]));
+        return
     }
     
     useEffect(()=>{
@@ -135,7 +130,7 @@ function Container(props) {
                                     }}> X </button>
                     </div>
                         <form className='flex flex-col w-full h-4/5 gap-2 items-center space-y-4' 
-                            action="/" method="post" id='formInput'
+                             id='formInput'
                             onSubmit={(e)=>{
                                 if(showAddButton){
                                     handleSubmit(e);
@@ -186,12 +181,16 @@ function Container(props) {
                                         name= 'catchPhrase' placeholder='catch phrase' onChange={onChangeCompany} value={selectedData.company.catchPhrase}/>
                                 </div>
                             </div>
+                            <div className='flex flex-col w-[200px] h-[70px] items-center gap-2 justify-center text-white'>
                             {
                             showAddButton? 
-                                <div className='flex flex-col w-[200px] h-[70px] items-center gap-2 justify-center text-white'>
-                                <button className='rounded-lg px-2 w-40 bg-red-300 
-                                    text-sm active:translate-y-[2px] p-1' type='submit' form='formInput'> Add </button>
-                                <button className='rounded-lg px-2 w-40 bg-red-600 
+                                    <button className='rounded-lg px-2 w-40 bg-red-300 
+                                        text-sm active:translate-y-[2px] p-1' type='submit' form='formInput'> Add </button>
+                                        :
+                                    <button className='rounded-lg px-2 w-40 bg-red-300 
+                                        text-sm active:translate-y-[2px] p-1' type='submit' form='formInput'> Save </button>
+                            }
+                            <button className='rounded-lg px-2 w-40 bg-red-600 
                                     text-sm active:translate-y-[2px] p-1' form='formInput'
                                     onClick={()=>{
                                         setSelectedData(null);
@@ -199,19 +198,6 @@ function Container(props) {
                                         setShowAddButton(false);
                                     }}> Cancel </button>
                             </div> 
-                            :
-                                <div className='flex flex-col w-[200px] h-[70px] items-center gap-2 justify-center text-white'>
-                                <button className='rounded-lg px-2 w-40 bg-red-300 
-                                    text-sm active:translate-y-[2px] p-1' type='submit' form='formInput'> Save </button>
-                                <button className='rounded-lg px-2 w-40 bg-red-600 
-                                    text-sm active:translate-y-[2px] p-1' form='formInput'
-                                    onClick={()=>{
-                                        setSelectedData(null);
-                                        handleModalClose();
-                                        setShowAddButton(false);
-                                    }}> Cancel </button>
-                                </div>
-                            }
                         </form> 
                     </div>
             </div>
@@ -223,8 +209,17 @@ function Container(props) {
                 {
                     Object.keys(data).length? 
                     data.map((item)=>
-                        <Card key={uniqid()} data={item} selectedData = {fetchSelectedData} 
-                                deleteSelectedData = {deleteSelectedData} handleModalOpen = {handleModalOpen}>
+                        <Card key={uniqid()} data={item}  
+                                onEdit = {(e)=>{
+                                    e.preventDefault();
+                                    setShowModal(true);
+                                    setSelectedData(item);
+                                 }}
+                                onDelete ={(e)=>{
+                                    e.preventDefault();
+                                    deleteSelectedData(item.id);
+                                }}
+                                 >
                         </Card>
                     ) 
                     : <p>No Data Loaded</p> 
