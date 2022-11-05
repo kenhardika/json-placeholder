@@ -1,9 +1,10 @@
-import Container from "./pages/Container";
+import Index from "./pages";
+
 
 function App() {
   return (
     <div>
-        <Container/>
+        <Index/>
     </div>
   );
 }

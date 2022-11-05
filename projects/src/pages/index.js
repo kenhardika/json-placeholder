@@ -7,7 +7,7 @@ import uniqid from 'uniqid';
 import deleteAPI from '../utils/deleteAPI';
 
 
-function Container(props) {
+function Index(props) {
     const defaultData = {
         "id": 0,
         "name": "",
@@ -24,19 +24,15 @@ function Container(props) {
     const [showModal, setShowModal] = useState(false); 
     const [selectedData, setSelectedData] = useState({}); 
     const [showAddButton, setShowAddButton] = useState(false); 
+    const [loading, setLoading] = useState(false);
     const handleModalClose =() => setShowModal(false);
     const handleModalOpen =() => setShowModal(true);
     const [data, setData] = useState({});
     
     const fetchData = useCallback(async (link) =>{
-        try{
-            const responseAPI = await fetchJSONPlaceholder(link);
-            setData(responseAPI.data);
-            return
-        }
-        catch{
-            throw Error('ERROR FETCH')
-        }
+        const responseAPI = await fetchJSONPlaceholder(link);
+        setData(responseAPI.data);
+        return
     }, [])
 
     async function deleteSelectedData(selectedDataId){
@@ -44,9 +40,6 @@ function Container(props) {
             if(responseAPI.status === 200 || selectedDataId > 10){
                     const newData = data.filter((item)=> item.id !== selectedDataId);
                     setData(newData);
-                } 
-            else {
-                  return
                 }
     }
 
@@ -72,10 +65,14 @@ function Container(props) {
                 const responseAPI = await editAPI(selectedData);
                 const updatedItems = data.map(item => item.id === responseAPI.data.id ? responseAPI.data : item);
                 setData(updatedItems);
+                handleModalClose();
+                setLoading(false);
             } 
             else{
                 const updatedItems = data.map(item => item.id === selectedData.id ? selectedData : item);
                 setData(updatedItems);
+                handleModalClose();
+                setLoading(false);
             }
     }
 
@@ -95,6 +92,9 @@ function Container(props) {
         responseAPI.data.id = randomizeID();
         const responseData = responseAPI.data;
         setData((prev)=>([responseData, ...prev]));
+        handleModalClose();
+        setShowAddButton(false);
+        setLoading(false);
         return
     }
     
@@ -110,6 +110,7 @@ function Container(props) {
                 handleModalOpen();
                 setSelectedData(defaultData);
                 setShowAddButton(true);
+                setLoading(false);
                 }}>
             + Add 
             </button>
@@ -134,13 +135,11 @@ function Container(props) {
                             onSubmit={(e)=>{
                                 if(showAddButton){
                                     handleSubmit(e);
-                                    handleModalClose();
-                                    setShowAddButton(false);
-
+                                    setLoading(true);
                                 }
                                 else{
                                     handleEdit(e);
-                                    handleModalClose();
+                                    setLoading(true);
                                 }
                                 }}>
                                     
@@ -184,7 +183,7 @@ function Container(props) {
                             <div className='flex flex-col w-[200px] h-[70px] items-center gap-2 justify-center text-white'>
                                     <button className='rounded-lg px-2 w-40 bg-red-300 
                                         text-sm active:translate-y-[2px] p-1' type='submit' form='formInput'> 
-                                        { showAddButton? 'Add' : "Save" }   </button>
+                                        { loading? 'loading...' : showAddButton? 'Add' : "Save" }   </button>
                                     <button className='rounded-lg px-2 w-40 bg-red-600 
                                         text-sm active:translate-y-[2px] p-1' form='formInput'
                                         onClick={()=>{
@@ -207,6 +206,7 @@ function Container(props) {
                         <Card key={uniqid()} data={item}  
                                 onEdit = {(e)=>{
                                     e.preventDefault();
+                                    setLoading(false);
                                     setShowModal(true);
                                     setSelectedData(item);
                                  }}
@@ -224,4 +224,4 @@ function Container(props) {
     );
 }
 
-export default Container;
+export default Index;

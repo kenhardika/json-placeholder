@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 function Card({data, onEdit, onDelete}) {
+    const [loading, setLoading] = useState(false);
     return (
         <div className='h-[230px] w-full p-4  gap-4 flex 
             flex-row border-solid border-black border-2 rounded-lg shadow-lg hover:translate-y-[-2px] bg-gray-100'>
@@ -17,9 +18,12 @@ function Card({data, onEdit, onDelete}) {
                     <button onClick={(e)=>onEdit(e)} className='block w-[50px] h-[30px] 
                         text-white bg-red-400 hover:bg-red-600 font-medium rounded-lg text-sm 
                             text-center active:translate-y-[2px]'> edit </button>
-                     <button onClick={(e)=>onDelete(e)} 
-                        className='block w-[50px] h-[30px] text-white bg-red-500 hover:bg-red-600 
-                    font-medium rounded-lg text-sm text-center active:translate-y-[2px]'> delete </button>
+                     <button onClick={(e)=>{
+                                    onDelete(e)
+                                    setLoading(true);
+                                }} 
+                        className='block w-[60px] h-[30px] text-white bg-red-500 hover:bg-red-600 
+                    font-medium rounded-lg text-sm text-center active:translate-y-[2px]'>  { loading? 'loading..' : "delete"} </button>
                 </div>
 
             </div> 
